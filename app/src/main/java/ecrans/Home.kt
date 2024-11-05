@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.monapp.R
 
-
 @Composable
 fun HomeScreen(navController: androidx.navigation.NavHostController) {
     val context = LocalContext.current

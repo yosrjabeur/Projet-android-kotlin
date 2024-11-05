@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,6 @@ import coil.compose.AsyncImage
 import com.example.monapp.MainViewModel
 import com.example.monapp.R
 import com.example.monapp.models.ActeurModel
-import com.example.monprofil.Allitems
 
 @Composable
 fun ActorsScreen(viewModel: MainViewModel) {
@@ -61,7 +62,6 @@ fun ActorsScreen(viewModel: MainViewModel) {
         )
     }
 }
-
 @Composable
 fun ActorItem(actor: ActeurModel) {
     val imageUrl = "https://image.tmdb.org/t/p/w300${actor.profile_path}"
@@ -70,7 +70,7 @@ fun ActorItem(actor: ActeurModel) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable {  },
+            .clickable { },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
@@ -79,7 +79,6 @@ fun ActorItem(actor: ActeurModel) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             AsyncImage(
                 model = imageUrl,
                 contentDescription = actor.name,
@@ -87,7 +86,8 @@ fun ActorItem(actor: ActeurModel) {
                 fallback = placeholderImage,
                 modifier = Modifier
                     .size(128.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(12.dp))
+                    .shadow(elevation = 4.dp)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -106,4 +106,3 @@ fun ActorItem(actor: ActeurModel) {
         }
     }
 }
-

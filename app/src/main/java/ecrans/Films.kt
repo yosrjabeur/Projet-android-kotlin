@@ -1,4 +1,5 @@
 package ecrans
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -9,9 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,7 +19,7 @@ import com.example.monapp.MainViewModel
 import com.example.monapp.models.Movie
 
 @Composable
-fun FilmsScreen(viewModel: MainViewModel) {
+fun FilmsScreen(viewModel: MainViewModel, onMovieClick: (Int) -> Unit) {
     val movies by viewModel.movies.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -29,29 +27,27 @@ fun FilmsScreen(viewModel: MainViewModel) {
     }
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(minSize = 150.dp),
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
         items(movies) { movie ->
-            MovieItem(movie = movie, viewModel = viewModel)
+            MovieItem(movie = movie, onMovieClick = onMovieClick, viewModel = viewModel)
         }
     }
-
 }
 
 @Composable
-fun MovieItem(movie: Movie, viewModel: MainViewModel) {
+fun MovieItem(movie: Movie, onMovieClick: (Int) -> Unit, viewModel: MainViewModel) {
     val imageUrl = viewModel.getImageUrl(movie.poster_path)
-    var isHovered by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .clickable { },
+            .clickable { onMovieClick(movie.id) },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {

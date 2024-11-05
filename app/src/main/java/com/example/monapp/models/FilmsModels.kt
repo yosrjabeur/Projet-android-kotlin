@@ -25,3 +25,29 @@ data class Movie(
     val vote_count: Int = 0
 )
 
+data class GenreFilm(val id: Int, val name: String)
+
+
+val genreList = listOf(
+    Genre(28, "Action"),
+    Genre(12, "Aventure"),
+    Genre(16, "Animation"),
+    Genre(35, "Comédie"),
+    Genre(80, "Crime"),
+    Genre(99, "Documentaire"),
+    Genre(18, "Drame"),
+    Genre(10751, "Famille"),
+    Genre(14, "Fantastique"),
+    Genre(36, "Histoire"),
+    Genre(27, "Horreur"),
+    Genre(10402, "Musique"),
+    Genre(9648, "Mystère"),
+    Genre(10749, "Romance"),
+    Genre(878, "Science-fiction"),
+    Genre(10770, "Téléfilm"),
+    Genre(53, "Thriller"),
+    Genre(10752, "Guerre"),
+    Genre(37, "Western")
+)
+
+

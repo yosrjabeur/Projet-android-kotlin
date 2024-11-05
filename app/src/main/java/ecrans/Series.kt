@@ -29,9 +29,8 @@ import coil.compose.AsyncImage
 import com.example.monapp.MainViewModel
 import com.example.monapp.models.SeriesModel
 
-
 @Composable
-fun SeriesScreen(viewModel: MainViewModel) {
+fun SeriesScreen(viewModel: MainViewModel, onSeriesClick: (Int) -> Unit) {
     val series by viewModel.series.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -46,17 +45,18 @@ fun SeriesScreen(viewModel: MainViewModel) {
             .padding(16.dp)
     ) {
         items(series) { serie ->
-            SeriesItem(serie)
+            SeriesItem(serie, onSeriesClick, viewModel)
         }
     }
 }
 
+
 @Composable
-fun SeriesItem(serie: SeriesModel) {
+fun SeriesItem(serie: SeriesModel, onSeriesClick: (Int) -> Unit, viewModel: MainViewModel) {
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .clickable {  },
+            .clickable { onSeriesClick(serie.id) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val imageUrl = "https://image.tmdb.org/t/p/w300${serie.poster_path}"
@@ -80,9 +80,9 @@ fun SeriesItem(serie: SeriesModel) {
         Text(text = serie.name, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
         Text(text = serie.first_air_date, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
 
-
+        val genreNames = viewModel.getGenreNames(serie.genre_ids)
         Text(
-            text = serie.genre_ids.joinToString(", "), //`
+            text = genreNames,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
         )

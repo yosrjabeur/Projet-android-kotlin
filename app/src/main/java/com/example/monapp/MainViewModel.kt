@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monapp.models.ActeurModel
 import com.example.monapp.models.Movie
+import com.example.monapp.models.MovieDetails
+import com.example.monapp.models.SerieDetails
 import com.example.monapp.models.SeriesModel
+import com.example.monapp.models.genreList
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.*
@@ -67,7 +70,6 @@ class MainViewModel : ViewModel() {
     }
 
     // Séries
-
     private val _series = MutableStateFlow<List<SeriesModel>>(listOf())
     val series: StateFlow<List<SeriesModel>> = searchQuery
         .combine(_series) { query, series ->
@@ -81,9 +83,45 @@ class MainViewModel : ViewModel() {
         }
     }
 
-
+    //recherhce
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    // Détails film
+    private val _movieDetails = MutableStateFlow<MovieDetails?>(null)
+    val movieDetails: StateFlow<MovieDetails?> = _movieDetails.asStateFlow()
+
+    fun getMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val details = api.getMovieDetails(movieId, api_key)
+                _movieDetails.value = details
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Erreur lors du chargement des détails du film : ${e.message}")
+            }
+        }
+    }
+
+    // série détails
+    private val _serieDetails = MutableStateFlow<SerieDetails?>(null)
+    val serieDetails: StateFlow<SerieDetails?> = _serieDetails
+
+    fun getSeriesDetails(seriesId: Int) {
+        viewModelScope.launch {
+            try {
+                val details = api.serieInfo(seriesId.toString(), api_key, "videos,credits")
+                _serieDetails.value = details
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Erreur lors du chargement des détails de la série : ${e.message}")
+            }
+        }
+    }
+
+    fun getGenreNames(genreIds: List<Int>): String {
+        return genreIds.mapNotNull { id ->
+            genreList.find { it.id == id }?.name
+        }.joinToString(", ")
     }
 
 }
