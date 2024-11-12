@@ -50,7 +50,7 @@ fun HomeScreen(navController: androidx.navigation.NavHostController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()) // Ajout du scroll en paysage
+                .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier

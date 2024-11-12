@@ -66,7 +66,7 @@ fun ActorItem(actor: ActeurModel, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .size(width = 160.dp, height = 240.dp) // Taille fixe pour uniformiser
+            .size(width = 160.dp, height = 240.dp)
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
