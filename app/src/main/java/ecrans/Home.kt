@@ -1,18 +1,22 @@
 package ecrans
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -22,18 +26,51 @@ import com.example.monapp.R
 @Composable
 fun HomeScreen(navController: androidx.navigation.NavHostController) {
     val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ProfileSection()
-        Spacer(modifier = Modifier.height(20.dp))
-        ContactSection(context)
-        Spacer(modifier = Modifier.height(30.dp))
-        Button(onClick = { navController.navigate("films") }) {
-            Text(text = "Démarrer")
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+    if (isPortrait) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ProfileSection()
+            Spacer(modifier = Modifier.height(20.dp))
+            ContactSection(context)
+            Spacer(modifier = Modifier.height(30.dp))
+            Button(onClick = { navController.navigate("films") }) {
+                Text(text = "Démarrer")
+            }
+        }
+    } else {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()) // Ajout du scroll en paysage
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ProfileSection()
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                ContactSection(context)
+                Spacer(modifier = Modifier.height(30.dp))
+                Button(onClick = { navController.navigate("films") }) {
+                    Text(text = "Démarrer")
+                }
+            }
         }
     }
 }
@@ -54,14 +91,14 @@ fun ProfileSection() {
         style = MaterialTheme.typography.headlineMedium,
         modifier = Modifier.padding(8.dp)
     )
-
     Spacer(modifier = Modifier.height(5.dp))
-
     Text(
         text = "Étudiante développeuse passionnée par la création d'apps innovantes.",
         style = MaterialTheme.typography.bodyLarge,
         textAlign = TextAlign.Center,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     )
 }
 

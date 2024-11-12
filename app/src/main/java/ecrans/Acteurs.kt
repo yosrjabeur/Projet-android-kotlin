@@ -55,7 +55,6 @@ fun ActorsScreen(viewModel: MainViewModel, navController: NavController) {
                 navController.navigate("actorDetails/${actor.id}")
             }
         }
-
     }
 }
 
@@ -67,12 +66,15 @@ fun ActorItem(actor: ActeurModel, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)
+            .size(width = 160.dp, height = 240.dp) // Taille fixe pour uniformiser
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
@@ -91,15 +93,18 @@ fun ActorItem(actor: ActeurModel, onClick: () -> Unit) {
             Text(
                 text = actor.name,
                 style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxLines = 1
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = actor.known_for_department ?: "Information non disponible",
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxLines = 1
             )
-
         }
     }
 }
