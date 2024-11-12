@@ -37,7 +37,6 @@ fun SeriesScreen(viewModel: MainViewModel, onSeriesClick: (Int) -> Unit) {
         viewModel.lastSeries()
     }
     Log.d("SeriesScreen", "Series: ${series.size}")
-
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
         modifier = Modifier
@@ -49,7 +48,6 @@ fun SeriesScreen(viewModel: MainViewModel, onSeriesClick: (Int) -> Unit) {
         }
     }
 }
-
 
 @Composable
 fun SeriesItem(serie: SeriesModel, onSeriesClick: (Int) -> Unit, viewModel: MainViewModel) {
@@ -75,11 +73,9 @@ fun SeriesItem(serie: SeriesModel, onSeriesClick: (Int) -> Unit, viewModel: Main
                     .clip(MaterialTheme.shapes.medium)
             )
         }
-
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = serie.name, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
         Text(text = serie.first_air_date, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
-
         val genreNames = viewModel.getGenreNames(serie.genre_ids)
         Text(
             text = genreNames,

@@ -22,7 +22,6 @@ import com.example.monapp.R
 @Composable
 fun HomeScreen(navController: androidx.navigation.NavHostController) {
     val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,9 +31,7 @@ fun HomeScreen(navController: androidx.navigation.NavHostController) {
         ProfileSection()
         Spacer(modifier = Modifier.height(20.dp))
         ContactSection(context)
-
         Spacer(modifier = Modifier.height(30.dp))
-
         Button(onClick = { navController.navigate("films") }) {
             Text(text = "Démarrer")
         }

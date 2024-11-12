@@ -1,5 +1,4 @@
 package com.example.monapp.models
-
 import com.squareup.moshi.Json
 
 data class MovieDetails(

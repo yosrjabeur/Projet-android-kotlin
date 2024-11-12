@@ -17,20 +17,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainViewModel : ViewModel() {
-
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
-
     private val api = retrofit.create(Api::class.java)
     private val api_key = "b57151d36fecd1b693da830a2bc5766f"
-
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
 
     fun getImageUrl(path: String?, size: String = "w500"): String {
         return "https://image.tmdb.org/t/p/$size$path"
@@ -65,9 +61,19 @@ class MainViewModel : ViewModel() {
 
     fun lastActors() {
         viewModelScope.launch {
-            _acteurs.value = api.lastActors(api_key).results
+            try {
+                val response = api.lastActors(api_key)
+                _acteurs.value = response.results
+
+                Log.d("MainViewModel", "Acteurs chargés: ${response.results.size}")
+
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Erreur lors du chargement des acteurs : ${e.message}")
+            }
         }
+
     }
+
 
     // Séries
     private val _series = MutableStateFlow<List<SeriesModel>>(listOf())
@@ -123,5 +129,22 @@ class MainViewModel : ViewModel() {
             genreList.find { it.id == id }?.name
         }.joinToString(", ")
     }
+    // acteur détails
+    private val _actorDetails = MutableStateFlow<ActeurModel?>(null)
+    val actorDetails: StateFlow<ActeurModel?> = _actorDetails.asStateFlow()
+
+    fun getActorDetails(actorId: Int) {
+        viewModelScope.launch {
+            try {
+                val actor = api.getActorDetails(actorId, api_key)
+                _actorDetails.value = actor
+            } catch (e: Exception) {
+                Log.e("ActorDetails", "Erreur de récupération des détails de l'acteur", e)
+                _actorDetails.value = null
+            }
+        }
+    }
 
 }
+
+

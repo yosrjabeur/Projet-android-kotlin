@@ -1,5 +1,6 @@
 package ecrans
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,56 +28,51 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import com.example.monapp.MainViewModel
 import com.example.monapp.R
 import com.example.monapp.models.ActeurModel
 
 @Composable
-fun ActorsScreen(viewModel: MainViewModel) {
+fun ActorsScreen(viewModel: MainViewModel, navController: NavController) {
     val actors by viewModel.acteurs.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.lastActors()
     }
-    Log.d("ActorsScreen", "Actors: ${actors.size}")
 
-    if (actors.isNotEmpty()) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 150.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            items(actors) { actor ->
-                ActorItem(actor)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 150.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        items(actors) { actor ->
+            ActorItem(actor) {
+                navController.navigate("actorDetails/${actor.id}")
             }
         }
-    } else {
-        Text(
-            text = "Aucun acteur trouvé",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.fillMaxSize(),
-            textAlign = TextAlign.Center
-        )
+
     }
 }
+
 @Composable
-fun ActorItem(actor: ActeurModel) {
+fun ActorItem(actor: ActeurModel, onClick: () -> Unit) {
     val imageUrl = "https://image.tmdb.org/t/p/w300${actor.profile_path}"
     val placeholderImage = painterResource(id = R.drawable.placeholder)
 
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { },
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
@@ -99,10 +95,11 @@ fun ActorItem(actor: ActeurModel) {
             )
 
             Text(
-                text = actor.known_for_department,
+                text = actor.known_for_department ?: "Information non disponible",
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
             )
+
         }
     }
 }
