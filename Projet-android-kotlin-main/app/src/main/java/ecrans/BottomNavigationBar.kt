@@ -49,7 +49,7 @@ fun BottomNavigationBar(navController: androidx.navigation.NavHostController) {
         )
         BottomNavigationItem(
             icon = { Icon(painterResource(id = R.drawable.bobine_film), contentDescription = "Destination") },
-            label = { Text("Destination") },
+            label = { Text("Collections") },
             selected = navController.currentDestination?.route == "destination",
             onClick = {
                 navController.navigate("destination") {

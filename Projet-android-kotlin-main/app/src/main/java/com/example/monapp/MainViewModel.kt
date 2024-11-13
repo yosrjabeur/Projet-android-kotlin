@@ -154,7 +154,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = api.searchCollection(api_key, "horror")
-                _horrorCollections.value = response.results // On met à jour l'état avec les résultats
+                _horrorCollections.value = response.results
                 Log.d("MainViewModel", "Collections trouvées: ${response.results.size}")
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Erreur lors du chargement des collections : ${e.message}")

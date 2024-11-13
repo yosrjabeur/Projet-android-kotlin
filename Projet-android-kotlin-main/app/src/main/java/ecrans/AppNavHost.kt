@@ -1,6 +1,7 @@
 package ecrans
 
 import ActorDetailsScreen
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -8,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.monapp.MainViewModel
+import com.example.monapp.models.MovieHorror
 
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -43,7 +45,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             ActorDetailsScreen(viewModel, actorId)
         }
         composable("destination") {
-            DestinationScreen()
+            DestinationScreen(viewModel = viewModel)
         }
+
     }
 }
