@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.monapp.models.ActeurModel
 import com.example.monapp.models.Movie
 import com.example.monapp.models.MovieDetails
+import com.example.monapp.models.MovieHorror
 import com.example.monapp.models.SerieDetails
 import com.example.monapp.models.SeriesModel
 import com.example.monapp.models.genreList
@@ -141,6 +142,22 @@ class MainViewModel : ViewModel() {
             } catch (e: Exception) {
                 Log.e("ActorDetails", "Erreur de récupération des détails de l'acteur", e)
                 _actorDetails.value = null
+            }
+        }
+    }
+
+    //Collections (Horror)
+    private val _horrorCollections = MutableStateFlow<List<MovieHorror>>(listOf())
+    val horrorCollections: StateFlow<List<MovieHorror>> = _horrorCollections
+
+    fun searchHorrorCollections() {
+        viewModelScope.launch {
+            try {
+                val response = api.searchCollection(api_key, "horror")
+                _horrorCollections.value = response.results // On met à jour l'état avec les résultats
+                Log.d("MainViewModel", "Collections trouvées: ${response.results.size}")
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Erreur lors du chargement des collections : ${e.message}")
             }
         }
     }

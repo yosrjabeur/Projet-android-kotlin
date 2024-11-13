@@ -1,6 +1,7 @@
 package com.example.monapp
 
 import com.example.monapp.models.ActeurModel
+import com.example.monapp.models.CollectionResponse
 import com.example.monapp.models.MovieDetails
 import com.example.monapp.models.MovieResponse
 import com.example.monapp.models.ResultActors
@@ -34,5 +35,13 @@ interface Api {
         @Path("person_id") personId: Int,
         @Query("api_key") apiKey: String
     ): ActeurModel
+
+
+
+    @GET("search/collection")
+    suspend fun searchCollection(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String
+    ): CollectionResponse
 
 }
