@@ -29,6 +29,7 @@ fun DestinationScreen() {
     LazyColumn {
         items(horrorCollections) { collection ->
             Text(text = collection.name)
+
         }
     }
 
