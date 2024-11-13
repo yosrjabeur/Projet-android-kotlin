@@ -61,7 +61,6 @@ fun CollectionItemLeftToRight(collection: MovieHorror) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-
         Text(
             text = collection.name,
             style = MaterialTheme.typography.h6,
